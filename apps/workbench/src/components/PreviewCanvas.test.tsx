@@ -20,6 +20,25 @@ describe("PreviewCanvas", () => {
     expect(markup).toContain('data-viewport="compact"');
   });
 
+  test("renders Harness as a behavioral handoff when contracts resolve", () => {
+    const markup = renderToStaticMarkup(
+      <PreviewCanvas
+        selection={selection}
+        mode="harness"
+        theme="light"
+        viewport="desktop"
+      />,
+    );
+
+    expect(markup).toContain("Official testing contracts resolved");
+    expect(markup).toContain("@get-bb/plugin-sdk/testing");
+    expect(markup).toContain("does not execute plugin code");
+    expect(markup).not.toContain("Harness preview is unavailable");
+    expect(markup).not.toContain("upstream-backed adapter");
+    expect(markup).not.toContain('aria-label="bb Plugin Studio workbench"');
+    expect(markup).not.toContain("<iframe");
+  });
+
   test("renders Live as a native handoff instead of Fixture output", () => {
     const markup = renderToStaticMarkup(
       <PreviewCanvas
