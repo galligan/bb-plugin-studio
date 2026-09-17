@@ -49,7 +49,7 @@ Exactness has two levels:
    Measured tokens and screenshot comparisons keep the replica honest, but it is
    still a replica.
 2. In live plugin mode, bb itself renders the host chrome and provides state
-   through `@bb/plugin-sdk/app`. This is the production-exact surface and should
+   through `@get-bb/plugin-sdk/app`. This is the production-exact surface and should
    be the final validation environment for plugin UI.
 
 Stay attached to upstream through supported versioned boundaries:
@@ -73,9 +73,10 @@ The source control in the Studio overlay represents adapters, not a browser data
 fetch:
 
 - **Fixtures** are always available in `apps/workbench`.
-- **Harness** remains unavailable in the launcher until an upstream-backed
-  public testing adapter exists, even when inspection can resolve the official
-  contract.
+- **Harness** is available in the launcher when the selected plugin resolves
+  `@get-bb/plugin-sdk/testing` and `@get-bb/plugin-sdk/testing/app`. Inspection
+  reports that contract readiness independently of Live bb; Harness results are
+  behavioral, not visual authority.
 - **Live bb** becomes selectable only when native inspection proves the selected
   frontend plugin is installed and runnable. The browser then renders a
   handoff-only canvas; native bb remains the visual authority.
@@ -118,17 +119,18 @@ Component registrations can receive deterministic behavior through
 `mountPluginContentScripts` lifecycle and must never be mounted during ordinary
 discovery. Host-rendered actions still require live bb for their real chrome.
 
-Until an official testing package and upstream-backed adapter are both usable,
-the launcher exposes Harness as unavailable. Inspection may independently say
-that the official contract resolves; that is contract readiness, not a rendered
-Harness preview. The sibling checkout is not a fallback dependency.
-[get-bb/bb#1134](https://github.com/get-bb/bb/issues/1134) is the upstream
-publication tracker.
+When the selected plugin resolves `@get-bb/plugin-sdk/testing` and
+`@get-bb/plugin-sdk/testing/app`, the launcher can expose Harness as available.
+Inspection reports that contract readiness independently of Live bb. Harness
+results are behavioral, not visual authority. The sibling checkout is not a
+fallback dependency; do not copy the official harness from `../bb`.
 
 Scaffold dependency installation remains native bb behavior. bb Plugin Studio does not
-repair generated packages after the fact;
-[get-bb/bb#1133](https://github.com/get-bb/bb/issues/1133) and draft
-[PR #1135](https://github.com/get-bb/bb/pull/1135) own that fix.
+repair generated packages after the fact.
+[get-bb/bb#1133](https://github.com/get-bb/bb/issues/1133) and
+[PR #1135](https://github.com/get-bb/bb/pull/1135) landed the native
+`NODE_ENV=production` scaffold-install path; Plugin Studio still delegates to
+those commands rather than patching generated projects.
 
 ## Plugins
 
@@ -136,7 +138,7 @@ repair generated packages after the fact;
 packaging, and visual boundaries used by this repository without making Plugin
 Studio the home of independently distributed plugins.
 
-Plugin UI can share host-neutral components with the workbench once a second consumer proves the boundary. Code that imports `@bb/plugin-sdk/app` stays inside the plugin adapter or entrypoint because that runtime only exists inside bb.
+Plugin UI can share host-neutral components with the workbench once a second consumer proves the boundary. Code that imports `@get-bb/plugin-sdk/app` stays inside the plugin adapter or entrypoint because that runtime only exists inside bb.
 
 ## Distribution
 

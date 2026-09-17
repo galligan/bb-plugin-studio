@@ -4,6 +4,6 @@
     "skipLibCheck": true,
     "types": ["bun", "node"]
   },
-  "include": ["server.ts", "app.tsx", "src", "types", "visual"],
+  "include": ["server.ts", "app.tsx", "src", "visual"],
   "exclude": []
 }

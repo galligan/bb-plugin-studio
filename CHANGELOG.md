@@ -7,6 +7,12 @@ prereleases; it does not imply a stable API or support promise.
 
 ### Changed
 
+- Adopt bb 0.43.1 as the minimum and verified-through host, pin
+  `@get-bb/plugin-sdk@0.4.87` (the version shipped with that release, not npm
+  latest), and resolve official `testing` / `testing/app` harness subpaths from
+  a clean plugin install. Isolated bb 0.36.0 still typechecks and builds the
+  Studio source, but it refuses a managed install that declares
+  `engines.bbPluginSdk ^0.4.87`.
 - Rename the product to **bb Plugin Studio** and its native bb surface to
   **Plugin Studio**.
 - Rename the source repository to `galligan/bb-plugin-studio`; GitHub preserves

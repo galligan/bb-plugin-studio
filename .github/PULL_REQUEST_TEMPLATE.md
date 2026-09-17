@@ -14,7 +14,7 @@
 
 <!-- Note security, package, Fixture/Harness/Live, or upstream compatibility effects. -->
 
-- [ ] I kept native bb and `@bb/plugin-sdk` authoritative for their contracts and lifecycle.
+- [ ] I kept native bb and `@get-bb/plugin-sdk` authoritative for their contracts and lifecycle.
 - [ ] I added or updated focused tests where behavior changed.
 - [ ] I ran the smallest relevant checks and the complete applicable gate.
 - [ ] I did not include credentials, customer data, authenticated state, or local absolute paths.

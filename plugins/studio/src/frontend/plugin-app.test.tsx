@@ -80,7 +80,7 @@ let sidebarState: {
   projects: Array<Record<string, unknown>>;
 } = { status: "ready", threads: [], projects: [] };
 
-mock.module("@bb/plugin-sdk/app", () => ({
+mock.module("@get-bb/plugin-sdk/app", () => ({
   definePluginApp: (setup: unknown) => ({ __bbPluginApp: true, setup }),
   useRpc: () => ({ call: rpcCall }),
   useBbNavigate: () => ({

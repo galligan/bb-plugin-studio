@@ -182,6 +182,59 @@ describe("compatibility evaluation", () => {
     });
   });
 
+  test("accepts published SDK declaration URLs on unpkg", () => {
+    const withUnpkg: CompatibilityTarget = {
+      ...target,
+      target: {
+        ...target.target,
+        pluginSdkVersion: "0.4.87",
+        pluginSdkEngineRange: "^0.4.87",
+      },
+      publicArtifacts: {
+        ...target.publicArtifacts,
+        declarations: {
+          backend: {
+            url: "https://unpkg.com/@get-bb/plugin-sdk@0.4.87/bundled-types/bb-plugin-sdk.d.ts",
+            sha256: "d".repeat(64),
+          },
+          app: {
+            url: "https://unpkg.com/@get-bb/plugin-sdk@0.4.87/bundled-types/bb-plugin-sdk-app.d.ts",
+            sha256: "e".repeat(64),
+          },
+        },
+      },
+    };
+    expect(
+      parseCompatibilityTarget(withUnpkg).publicArtifacts.declarations.backend
+        .url,
+    ).toContain("unpkg.com");
+    expect(
+      evaluateCompatibility(withUnpkg, {
+        ...matchingObservations(),
+        pluginSdkVersion: "0.4.87",
+        pluginSdkEngineRange: "^0.4.87",
+      }).checks.find(({ id }) => id === "target.release-coherence"),
+    ).toMatchObject({ status: "pass", observed: [] });
+  });
+
+  test("rejects unpkg declaration URLs that do not pin the recorded SDK version", () => {
+    expect(() =>
+      parseCompatibilityTarget({
+        ...target,
+        publicArtifacts: {
+          ...target.publicArtifacts,
+          declarations: {
+            ...target.publicArtifacts.declarations,
+            backend: {
+              url: "https://unpkg.com/@get-bb/plugin-sdk@0.4.99/bundled-types/bb-plugin-sdk.d.ts",
+              sha256: "d".repeat(64),
+            },
+          },
+        },
+      }),
+    ).toThrow(/immutable public/);
+  });
+
   test.each([
     [
       "SDK engine",
@@ -389,7 +442,7 @@ test("the checked-in target mirrors the catalog registration paths", async () =>
     path.resolve("compatibility/bb-target.json"),
     "utf8",
   );
-  const checkedTarget = JSON.parse(text) as CompatibilityTarget;
+  const checkedTarget = parseCompatibilityTarget(JSON.parse(text));
   expect(checkedTarget.registrationPaths).toEqual(
     surfaceCatalog.map(({ registrationPath }) => registrationPath),
   );

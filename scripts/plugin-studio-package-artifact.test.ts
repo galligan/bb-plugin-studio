@@ -37,7 +37,7 @@ describe("Studio package artifact", () => {
       license: "MIT",
       bin: { "bb-plugin-studio": "./dist/cli.js" },
       publishConfig: { access: "public", tag: "alpha" },
-      engines: { bb: ">=0.36.0", bbPluginSdk: "^0.4.1" },
+      engines: { bb: ">=0.43.1", bbPluginSdk: "^0.4.87" },
       bb: {
         name: "Plugin Studio",
         server: "./server.ts",

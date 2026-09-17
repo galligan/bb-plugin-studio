@@ -54,7 +54,7 @@ bun run bb-plugin-studio inspect /absolute/path/to/plugin
 - bb Plugin Studio may inspect, explain, orchestrate native commands, render deterministic
   fixtures, and hand work off to live bb.
 - Official Harness code must come from the selected plugin's
-  `@bb/plugin-sdk/testing` dependencies. Do not copy it from upstream or
+  `@get-bb/plugin-sdk/testing` dependencies. Do not copy it from upstream or
   reimplement it here.
 - Fixtures are deterministic approximations. Live bb remains the visual and
   integration authority.
@@ -67,7 +67,7 @@ or server boundaries. Document any new filesystem, network, secret, or
 external-service access.
 
 A local checkout of upstream bb may be useful for read-only comparison, but it
-is not a bb Plugin Studio dependency. Changes to bb or `@bb/plugin-sdk` belong in
+is not a bb Plugin Studio dependency. Changes to bb or `@get-bb/plugin-sdk` belong in
 [get-bb/bb](https://github.com/get-bb/bb).
 
 ## Verification

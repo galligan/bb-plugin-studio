@@ -17,7 +17,7 @@ export function createPluginStudioRegistryDocument(args: {
         name: PLUGIN_STUDIO_PACKAGE_NAME,
         version: PLUGIN_STUDIO_PACKAGE_VERSION,
         license: "MIT",
-        engines: { bb: ">=0.36.0", bbPluginSdk: "^0.4.1" },
+        engines: { bb: ">=0.43.1", bbPluginSdk: "^0.4.87" },
         dist: { integrity: args.integrity, shasum: args.shasum, tarball },
       },
     },

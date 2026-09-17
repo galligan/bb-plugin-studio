@@ -1,4 +1,5 @@
 import { satisfies, valid, validRange } from "semver";
+import { PLUGIN_SDK_PACKAGE } from "./harness.ts";
 import type { InstalledPlugin } from "./native.ts";
 import type {
   HarnessResolution,
@@ -87,11 +88,9 @@ export function harnessCheck(
     return {
       id: "mode.harness",
       status: "unavailable",
-      summary:
-        "Harness mode is unavailable because @bb/plugin-sdk is not published.",
+      summary: `Harness mode is unavailable because ${PLUGIN_SDK_PACKAGE} is not published.`,
       detail: `${publication.detail} ${harness.detail}`,
-      nextAction:
-        "Track get-bb/bb#1134 and install the official SDK after it is published; do not use a local fallback.",
+      nextAction: `Install the published ${PLUGIN_SDK_PACKAGE} package in the selected plugin; do not use a local fallback.`,
     };
   }
   if (harness.state === "dependency-unresolved") {
@@ -101,8 +100,7 @@ export function harnessCheck(
       summary:
         "Harness mode is unavailable because the local SDK dependency cannot resolve.",
       detail: harness.detail,
-      nextAction:
-        "Repair the selected plugin's declared @bb/plugin-sdk dependency.",
+      nextAction: `Repair the selected plugin's declared ${PLUGIN_SDK_PACKAGE} dependency.`,
     };
   }
   if (harness.state === "testing-subpath-unavailable") {
@@ -119,12 +117,11 @@ export function harnessCheck(
   return {
     id: "mode.harness",
     status: "unavailable",
-    summary:
-      "Harness mode is unavailable because the plugin does not declare @bb/plugin-sdk.",
+    summary: `Harness mode is unavailable because the plugin does not declare ${PLUGIN_SDK_PACKAGE}.`,
     detail: harness.detail,
     nextAction:
       publication?.state === "published"
-        ? "Declare and install the published @bb/plugin-sdk package in the selected plugin."
+        ? `Declare and install the published ${PLUGIN_SDK_PACKAGE} package in the selected plugin.`
         : "Check SDK publication, then declare the official package when available.",
   };
 }
@@ -144,16 +141,16 @@ export function publicationCheck(
     return {
       id: "sdk.publication",
       status: "pass",
-      summary: `@bb/plugin-sdk ${publication.version ?? "is"} published.`,
+      summary: `${PLUGIN_SDK_PACKAGE} ${publication.version ?? "is"} published.`,
     };
   }
   if (publication?.state === "missing") {
     return {
       id: "sdk.publication",
       status: "unavailable",
-      summary: "The official @bb/plugin-sdk package is not published.",
+      summary: `The official ${PLUGIN_SDK_PACKAGE} package is not published.`,
       detail: publication.detail,
-      nextAction: "Track get-bb/bb#1134 for the official package publication.",
+      nextAction: `Confirm ${PLUGIN_SDK_PACKAGE} is published, then install it in the selected plugin.`,
     };
   }
   return {

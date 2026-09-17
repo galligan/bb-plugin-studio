@@ -74,8 +74,8 @@ bb Plugin Studio distinguishes three confidence levels:
 
 - **Fixture** is a deterministic approximation for visual iteration.
 - **Harness** validates public behavior only when the selected plugin can
-  resolve the official `@bb/plugin-sdk/testing` contracts and Studio has an
-  upstream-backed adapter.
+  resolve the official `@get-bb/plugin-sdk/testing` contracts. Harness results
+  are behavioral, not visual authority.
 - **Live bb** is the plugin running in the native host. Live bb is the visual
   and integration authority.
 

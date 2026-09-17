@@ -197,6 +197,7 @@ describe("public plugin surface lab", () => {
       .join("\n");
 
     expect(sourceFiles).not.toContain("@bb/plugin-sdk");
+    expect(sourceFiles).not.toContain("@get-bb/plugin-sdk");
     expect(sourceFiles).not.toContain("usePluginInspection");
     expect(sourceFiles).not.toContain("pluginInspectionPlugin");
     expect(sourceFiles).not.toMatch(

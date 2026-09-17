@@ -13,8 +13,8 @@ import { generateThirdPartyLicenses } from "./third-party-licenses.ts";
 const repositoryRoot = fileURLToPath(new URL("..", import.meta.url));
 const expectedPackageName = "bb-plugin-studio";
 const expectedPackageVersion = "0.1.0-alpha.3";
-const defaultExpectedBbVersion = "0.36.0";
-const expectedSdkVersion = "0.4.1";
+const defaultExpectedBbVersion = "0.43.1";
+const expectedSdkVersion = "0.4.87";
 const MAX_COMPRESSED_PACKAGE_BYTES = 128 * 1024 * 1024;
 const MAX_EXPANDED_PACKAGE_BYTES = 256 * 1024 * 1024;
 const MAX_NON_RUNTIME_FILE_BYTES = 16 * 1024 * 1024;
@@ -139,8 +139,8 @@ export function assertPluginStudioPackageMetadata(
     "Plugin Studio package files manifest differs from the exact payload allowlist.",
   );
   assert(
-    manifest.engines?.bb === ">=0.36.0" &&
-      manifest.engines?.bbPluginSdk === "^0.4.1",
+    manifest.engines?.bb === ">=0.43.1" &&
+      manifest.engines?.bbPluginSdk === "^0.4.87",
     "Unexpected Plugin Studio engine requirements.",
   );
   assert(
@@ -326,7 +326,7 @@ export async function inspectPluginStudioPackageDirectory(
   );
   assert(
     createHash("sha256").update(packagedReadme).digest("hex") ===
-      "38f2a02b3ca081a563afa9078a93796afbd753707bfab4eb175d3744dcc9171e" &&
+      "6f77c204f0b4798bccab6d31bffd69418ddf1a86ddccc679b6884759e0d35a1a" &&
       Buffer.compare(packagedReadme, approvedReadme) === 0,
     "Plugin Studio packaged README differs from the approved usage document.",
   );
@@ -339,7 +339,7 @@ export async function inspectPluginStudioPackageDirectory(
   const skillText = packagedSkill.toString("utf8");
   assert(
     createHash("sha256").update(packagedSkill).digest("hex") ===
-      "7b226425296a472434423f29036589980843ef87ac3ce3f2cf068723a0fb4d1b" &&
+      "e4346c408df02ebcd07c55f731866dbb580058829d118ad1c8d9799dc7a4f6b4" &&
       Buffer.compare(packagedSkill, approvedSkill) === 0 &&
       skillText.startsWith("---\nname: plugin-studio\ndescription:") &&
       skillText.includes("# Plugin Studio") &&

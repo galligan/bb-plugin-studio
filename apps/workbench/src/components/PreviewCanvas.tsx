@@ -34,12 +34,12 @@ export function PreviewCanvas({
         <h1>
           {mode === "live"
             ? "Continue in native bb"
-            : "Harness preview is unavailable"}
+            : "Official testing contracts resolved"}
         </h1>
         <p>
           {mode === "live"
             ? "Live bb is the visual authority. bb Plugin Studio does not fetch, embed, or reproduce the Connect runtime. Use the launcher handoff to open this plugin in bb."
-            : "The official testing contract may resolve, but bb Plugin Studio will not claim Harness fidelity until the upstream-backed adapter exists."}
+            : "Harness validates public SDK behavior through the selected plugin's @get-bb/plugin-sdk/testing contracts. It does not reproduce bb layout, CSS, routing, or runtime, and this canvas does not execute plugin code. Run those official tests for behavioral checks. Live bb remains the visual authority."}
         </p>
       </section>
     </main>

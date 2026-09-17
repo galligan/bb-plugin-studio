@@ -28,5 +28,7 @@ schema-v4 catalog.
   loopback listener, or substitute installed inventory for source discovery.
 - Use native `bb plugin build`, `bb plugin dev`, and `bb plugin reload` for
   lifecycle work. Plugin Studio does not replace those commands.
-- Treat Fixture, Harness, and Live claims separately. Harness remains
-  unavailable while the official testing package is not publicly resolvable.
+- Treat Fixture, Harness, and Live claims separately. Harness is available when
+  the selected plugin resolves `@get-bb/plugin-sdk/testing` and `testing/app`.
+  It validates public behavior, not host chrome. Live bb remains the visual
+  authority.

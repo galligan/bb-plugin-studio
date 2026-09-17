@@ -47,13 +47,22 @@ function inspectionWithHarness(available: boolean): PluginInspection {
 }
 
 describe("launcher preview capabilities", () => {
-  test("keeps Harness unavailable until the upstream-backed adapter exists", () => {
+  test("exposes Harness when the official testing subpaths resolve", () => {
     const capabilities = previewModeCapabilities(inspectionWithHarness(true));
 
     expect(capabilities.harness).toEqual({
-      available: false,
+      available: true,
       detail:
-        "The official Harness contract resolves, but bb Plugin Studio has no upstream-backed Harness adapter yet.",
+        "Official contract resolves. Harness results are behavioral, not visual authority.",
+    });
+  });
+
+  test("keeps Harness unavailable when the official contract does not resolve", () => {
+    const capabilities = previewModeCapabilities(inspectionWithHarness(false));
+
+    expect(capabilities.harness).toEqual({
+      available: false,
+      detail: "Unavailable.",
     });
   });
 

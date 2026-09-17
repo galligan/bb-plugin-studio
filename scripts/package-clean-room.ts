@@ -515,7 +515,7 @@ try {
         name: "bb-plugin-fixture",
         version: "1.0.0",
         engines: { bb: ">=0.35.1", bbPluginSdk: ">=0.1.0" },
-        dependencies: { "@bb/plugin-sdk": "^0.4.1" },
+        dependencies: { "@get-bb/plugin-sdk": "0.4.87" },
         bb: {
           name: "Fixture",
           description: "Clean-room fixture plugin",

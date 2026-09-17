@@ -139,7 +139,7 @@ describe("StudioOverlay interactions", () => {
 
     const harness = screen.getByRole("button", { name: /Harness/ });
     const live = screen.getByRole("button", { name: /Live bb/ });
-    expect((harness as HTMLButtonElement).disabled).toBe(true);
+    expect((harness as HTMLButtonElement).disabled).toBe(false);
     expect((live as HTMLButtonElement).disabled).toBe(false);
     await user.click(live);
     expect(callbacks.onModeChange).toHaveBeenCalledWith("live");

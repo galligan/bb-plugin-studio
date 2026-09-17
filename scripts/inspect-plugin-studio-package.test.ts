@@ -19,11 +19,11 @@ import { createCanonicalUstarFixture } from "./plugin-studio-package-ustar-fixtu
 function buildMetadata() {
   return {
     sdkMajor: 0,
-    sdkVersion: "0.4.1",
+    sdkVersion: "0.4.87",
     artifactFormatVersion: 1,
     pluginId: "studio",
     pluginVersion: "0.1.0-alpha.3",
-    builtWith: { bbVersion: "0.36.0", pluginSdkVersion: "0.4.1" },
+    builtWith: { bbVersion: "0.43.1", pluginSdkVersion: "0.4.87" },
   };
 }
 
@@ -44,7 +44,7 @@ function packageManifest() {
     license: "MIT",
     bin: { "bb-plugin-studio": "./dist/cli.js" },
     publishConfig: { access: "public", tag: "alpha" },
-    engines: { bb: ">=0.36.0", bbPluginSdk: "^0.4.1" },
+    engines: { bb: ">=0.43.1", bbPluginSdk: "^0.4.87" },
     bb: {
       name: "Plugin Studio",
       description: "Build, inspect, and preview bb plugins.",
@@ -71,10 +71,10 @@ describe("Plugin Studio package inspection", () => {
       ).bytes(),
     ]);
     expect(createHash("sha256").update(readme).digest("hex")).toBe(
-      "38f2a02b3ca081a563afa9078a93796afbd753707bfab4eb175d3744dcc9171e",
+      "6f77c204f0b4798bccab6d31bffd69418ddf1a86ddccc679b6884759e0d35a1a",
     );
     expect(createHash("sha256").update(skill).digest("hex")).toBe(
-      "7b226425296a472434423f29036589980843ef87ac3ce3f2cf068723a0fb4d1b",
+      "e4346c408df02ebcd07c55f731866dbb580058829d118ad1c8d9799dc7a4f6b4",
     );
   });
 
@@ -138,7 +138,7 @@ describe("Plugin Studio package inspection", () => {
   });
 
   test("pins normal inspection to the minimum build and permits one explicit candidate build", () => {
-    expect(expectedPluginStudioPackageBbVersion({})).toBe("0.36.0");
+    expect(expectedPluginStudioPackageBbVersion({})).toBe("0.43.1");
     expect(
       expectedPluginStudioPackageBbVersion({
         BB_PLUGIN_STUDIO_EXPECTED_BB_VERSION: "0.38.0",
@@ -155,11 +155,13 @@ describe("Plugin Studio package inspection", () => {
         packageManifest(),
         {
           ...buildMetadata(),
-          builtWith: { bbVersion: "0.38.0", pluginSdkVersion: "0.4.1" },
+          sdkVersion: "0.4.87",
+          builtWith: { bbVersion: "0.38.0", pluginSdkVersion: "0.4.87" },
         },
         {
           ...buildMetadata(),
-          builtWith: { bbVersion: "0.38.0", pluginSdkVersion: "0.4.1" },
+          sdkVersion: "0.4.87",
+          builtWith: { bbVersion: "0.38.0", pluginSdkVersion: "0.4.87" },
         },
         "0.38.0",
       ),
@@ -186,7 +188,7 @@ describe("Plugin Studio package inspection", () => {
         packageManifest(),
         {
           ...buildMetadata(),
-          builtWith: { bbVersion: "0.37.0", pluginSdkVersion: "0.4.1" },
+          builtWith: { bbVersion: "0.37.0", pluginSdkVersion: "0.4.87" },
         },
         buildMetadata(),
       ),

@@ -64,8 +64,9 @@ target and update process.
 ## Fidelity boundaries
 
 - **Fixture** support covers bb Plugin Studio's deterministic stories and adapters.
-- **Harness** support begins only when the selected plugin resolves the official
-  testing package and bb Plugin Studio has an upstream-backed adapter.
+- **Harness** support is available when the selected plugin resolves the
+  official `@get-bb/plugin-sdk/testing` contracts. Results are behavioral, not
+  visual authority.
 - **Live bb** is the authority for host rendering and integration behavior.
 
 Fixture screenshots cannot overrule live bb. When upstream adds a native

@@ -5,7 +5,7 @@ import {
   useBbNavigate,
   useRpc,
   type PluginNavPanelProps,
-} from "@bb/plugin-sdk/app";
+} from "@get-bb/plugin-sdk/app";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 import type { rpcContract } from "../../server";

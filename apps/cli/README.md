@@ -9,7 +9,7 @@ authenticated host state. The repository also contains the separately packaged
 Studio-owned integration plugin used for native bb testing.
 
 > bb Plugin Studio is an independent community project. Native bb and
-> `@bb/plugin-sdk` remain authoritative for plugin contracts, scaffolding,
+> `@get-bb/plugin-sdk` remain authoritative for plugin contracts, scaffolding,
 > build/install/dev behavior, host rendering, and runtime state.
 
 ## Try the source preview
@@ -65,14 +65,14 @@ the packaged static lab does not serve inspection data over HTTP.
 
 - **bb** owns scaffolding, declaration refresh, build, install, update,
   dev/reload, host UI, and live runtime.
-- **`@bb/plugin-sdk`** owns the typed backend/frontend contracts and official
+- **`@get-bb/plugin-sdk`** owns the typed backend/frontend contracts and official
   testing contracts.
 - **bb Plugin Studio** adds passive inspection, deterministic Fixture stories,
   compatibility diagnostics, visual/a11y tooling, and native handoff.
 
 bb Plugin Studio never copies the SDK testing harness or uses private bb application code
-as a substitute. Harness mode remains unavailable until the selected plugin can
-resolve the official testing package and bb Plugin Studio has an upstream-backed adapter.
+as a substitute. Harness mode is available only when the selected plugin
+resolves `@get-bb/plugin-sdk/testing` and `@get-bb/plugin-sdk/testing/app`.
 Live bb is always the visual and integration authority.
 
 Learn more in the
