@@ -159,8 +159,8 @@ from chat. Heartbeat only for CI and blockers.
 longer builds). Record in `RETRO.md`. Horizon is `merged` (user, 2026-09-17);
 do not widen to publish/release without approval.
 
-| Time       | Change | Reason | Approved By |
-| ---------- | ------ | ------ | ----------- |
+| Time       | Change                                                                    | Reason                                                                                                                                     | Approved By                                 |
+| ---------- | ------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------- |
 | 2026-09-17 | Raise `minimumBbVersion` and workspace `bb-app` pin from 0.36.0 to 0.43.1 | Isolated 0.36 managed install returned HTTP 422: Studio requires SDK `^0.4.87`, running SDK is 0.4.1. SDK 0.4.87 first ships in bb 0.43.1. | probe evidence (GOAL allows this amendment) |
 
 ## Stop Rules

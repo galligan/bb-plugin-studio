@@ -54,36 +54,36 @@ Daily `bb.db` WAL churn is the live 38886 server, not this prefix.
 
 ## Review Log
 
-| Round | Scope | Report | Score | State | Open P0-P2 | Notes |
-| ----- | ----- | ------ | ----- | ----- | ---------- | ----- |
-| 1 | standing | tmp/reviews/standing/1.json | pending | pending | pending | write before PR |
-| 1 | targeted SDK/inspection/compat | tmp/reviews/targeted/1.json | pending | pending | pending | write before PR |
+| Round | Scope                          | Report                      | Score   | State   | Open P0-P2 | Notes           |
+| ----- | ------------------------------ | --------------------------- | ------- | ------- | ---------- | --------------- |
+| 1     | standing                       | tmp/reviews/standing/1.json | pending | pending | pending    | write before PR |
+| 1     | targeted SDK/inspection/compat | tmp/reviews/targeted/1.json | pending | pending | pending    | write before PR |
 
 ## Verification Log
 
-| Check | Scope | Result | Notes |
-| ----- | ----- | ------ | ----- |
-| isolated `bb --version` | `/tmp/bb-isolated-0431-gDk3Jp` | 0.43.1 | HOME+BB_DATA_DIR isolated |
-| `bb plugin types --check plugins/studio` | isolated 0.43.1 | pass | pin 0.4.87, host 0.4.87 |
-| `bun test src` in plugins/studio | Studio | 75 pass | |
-| `bb plugin build plugins/studio` | isolated 0.43.1 | pass | builtWith 0.43.1 / 0.4.87 |
-| `bun run plugin-studio:package:test` | 0.43.1 workspace pin | pass | managed npm + disable footprint |
-| 0.36 managed install | isolated 0.36 | fail 422 | raised minimum |
-| `bun run compatibility:check` | repo | pass | desktop-v0.43.1 |
-| `bun run compatibility:latest --json` | repo | current | latest 0.43.1 |
-| `format:check && check && test && build` | repo | pass | |
-| daily `~/.bb` identity files | forbidden | unchanged | |
+| Check                                    | Scope                          | Result    | Notes                           |
+| ---------------------------------------- | ------------------------------ | --------- | ------------------------------- |
+| isolated `bb --version`                  | `/tmp/bb-isolated-0431-gDk3Jp` | 0.43.1    | HOME+BB_DATA_DIR isolated       |
+| `bb plugin types --check plugins/studio` | isolated 0.43.1                | pass      | pin 0.4.87, host 0.4.87         |
+| `bun test src` in plugins/studio         | Studio                         | 75 pass   |                                 |
+| `bb plugin build plugins/studio`         | isolated 0.43.1                | pass      | builtWith 0.43.1 / 0.4.87       |
+| `bun run plugin-studio:package:test`     | 0.43.1 workspace pin           | pass      | managed npm + disable footprint |
+| 0.36 managed install                     | isolated 0.36                  | fail 422  | raised minimum                  |
+| `bun run compatibility:check`            | repo                           | pass      | desktop-v0.43.1                 |
+| `bun run compatibility:latest --json`    | repo                           | current   | latest 0.43.1                   |
+| `format:check && check && test && build` | repo                           | pass      |                                 |
+| daily `~/.bb` identity files             | forbidden                      | unchanged |                                 |
 
 ## Tracker / PR Log
 
-| Item | State | Notes |
-| ---- | ----- | ----- |
-| #115 | merged | `f566649` on origin/main |
-| #117 | open | this PR |
-| #41 | open | harness resolution in this PR |
-| #43 | open | re-probe: native types/build already work; CLI wrap not this PR |
-| #116 | open | watcher; do not rewrite body |
-| PR 1 | not opened | |
+| Item | State      | Notes                                                           |
+| ---- | ---------- | --------------------------------------------------------------- |
+| #115 | merged     | `f566649` on origin/main                                        |
+| #117 | open       | this PR                                                         |
+| #41  | open       | harness resolution in this PR                                   |
+| #43  | open       | re-probe: native types/build already work; CLI wrap not this PR |
+| #116 | open       | watcher; do not rewrite body                                    |
+| PR 1 | not opened |                                                                 |
 
 ## Follow-Ups
 
