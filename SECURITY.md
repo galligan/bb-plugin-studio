@@ -20,7 +20,7 @@ acknowledge reports while the project is actively staffed, reproduce and triage
 the issue, coordinate a fix and disclosure boundary, and credit the reporter if
 requested.
 
-Security problems in native bb or `@bb/plugin-sdk` should follow the
+Security problems in native bb or `@get-bb/plugin-sdk` should follow the
 [upstream bb security policy](https://github.com/get-bb/bb/security/policy).
 
 ## Security boundary

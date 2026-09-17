@@ -6,16 +6,16 @@ values. The check is an alarm, not an updater.
 
 The policy separates three values:
 
-- `minimumBbVersion` is the oldest promised host (`0.36.0`). A lower observed
+- `minimumBbVersion` is the oldest promised host (`0.43.1`). A lower observed
   version fails as unsupported.
 - `verifiedThroughBbVersion` is the newest immutable release fully audited
-  (`0.37.0`). Versions from the minimum through this boundary pass.
+  (`0.43.1`). Versions from the minimum through this boundary pass.
 - the observed version comes from the selected native `bb` executable. A newer
   version emits a nonfatal `notice`; its presence alone never makes an ordinary
   repository check fail.
 
 `plugins/studio/package.json` expresses the same open-ended host floor as
-`engines.bb: ">=0.36.0"`. The SDK contract remains independent in
+`engines.bb: ">=0.43.1"`. The SDK contract remains independent in
 `engines.bbPluginSdk`.
 
 ```sh
@@ -36,8 +36,10 @@ the sibling bb checkout. A failed network or native probe is `unverified` and
 fails the command rather than silently passing.
 
 The target is validated before any network request. Guard lists must be
-non-empty and unique, and artifact URLs must be exact immutable paths on
-`raw.githubusercontent.com/get-bb/bb`. Redirects are rejected.
+non-empty and unique. Git artifact URLs must be exact immutable paths on
+`raw.githubusercontent.com/get-bb/bb`. SDK declaration URLs may use that git
+form or the version-pinned published package on `unpkg.com/@get-bb/plugin-sdk@<version>`.
+Redirects are rejected.
 
 `compatibility:latest` compares the verified-through boundary with npm's stable
 `bb-app` release. It exits 0 when current, 10 when a newer release is
@@ -65,6 +67,31 @@ Candidate projection preserves the committed hashes, so changed declarations,
 registry data, or theme CSS remain actionable failures rather than being
 silently accepted.
 
+## Verified 0.43.1 evidence
+
+The `0.43.1` audit recorded:
+
+- plugin SDK package `@get-bb/plugin-sdk@0.4.87` (the version shipped with the
+  desktop tag, not npm latest);
+- backend source contract
+  `ddab6fbf2cdf31e2986ee7f6bf6ef4883af956e6391973f02cf3e6c46be6cb4d`;
+- app source contract
+  `c9379f666852c95654c63641aebcc46a4b596f13aa1d8090b95414e00ac85aab`;
+- theme CSS `5505d0036def8e9c485634f7a5b59b1087d9e71ecdbce48c563dc9dc0756b81b`;
+- component registry
+  `c1148ddb7da06da32e3e35bf9398dd4989253719b37b44276f6daf48408b6eb6` with new
+  items `icon-extended` and `icon-registry`;
+- `--bb-sidebar-row-height` still `1.75rem` and coarse `2.5rem`;
+  `--bb-sidebar-width` remains a live-only measurement.
+- new public frontend registration groups exist on 0.43.1 and are recorded as
+  uncataloged in the coverage test; cataloging them is out of scope for this
+  compatibility adoption.
+
+bb 0.43.1 no longer commits `packages/plugin-sdk/bundled-types/` on the git tag.
+The compatibility target therefore hashes the public source contracts
+(`backend-contract.ts`, `app-contract.ts`) that remain on `desktop-v0.43.1`.
+Native `bb plugin types` still generates from the published npm bundled-types.
+
 ## Verified 0.37.0 evidence
 
 The `0.37.0` audit recorded:
@@ -85,7 +112,7 @@ values above are for human comparison only.
    make CI green.
 2. Inspect the public diff between the old and proposed verified-through refs.
    Review registry item and digest changes together. Review backend and app
-   declaration hashes independently, even if `@bb/plugin-sdk` has the same
+   declaration hashes independently, even if `@get-bb/plugin-sdk` has the same
    version. Reconcile SDK and registration changes with the public surface
    catalog first.
 3. Run the full repository gate against the proposed values.

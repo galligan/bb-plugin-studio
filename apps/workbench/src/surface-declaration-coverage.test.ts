@@ -1,6 +1,7 @@
 import { describe, expect, test } from "bun:test";
 import {
   assertDeclarationCoverage,
+  compareDeclarationCoverage,
   extractRegistrationPaths,
 } from "../scripts/plugin-surface-declarations";
 
@@ -109,13 +110,27 @@ describe("plugin surface declaration coverage", () => {
   test("covers the committed Studio plugin SDK declaration in the normal test gate", async () => {
     const snapshot = Bun.file(
       new URL(
-        "../../../plugins/studio/types/bb-plugin-sdk.d.ts",
+        "../../../plugins/studio/node_modules/@get-bb/plugin-sdk/bundled-types/bb-plugin-sdk-app.d.ts",
         import.meta.url,
       ),
     );
 
     expect(await snapshot.exists()).toBe(true);
-    const sourceText = await snapshot.text();
-    expect(() => assertDeclarationCoverage(sourceText)).not.toThrow();
+    const coverage = compareDeclarationCoverage(await snapshot.text());
+    expect(coverage.absentFromDeclarations).toEqual([]);
+    expect(coverage.uncatalogedDeclarations).toEqual([
+      "experimental_icons.register",
+      "slots.experimental_appOverlay",
+      "slots.experimental_newThreadPanelAction",
+      "slots.experimental_sidebarNavigation",
+      "slots.experimental_sourceCodeRenderer",
+      "slots.experimental_diffRenderer",
+      "slots.commandPaletteAction",
+      "slots.experimental_providerIcon",
+      "slots.experimental_timelineRenderer",
+      "slots.experimental_environmentProviderInputs",
+      "slots.experimental_machineProviderInputs",
+      "experimental_sidebarFooter.register",
+    ]);
   });
 });

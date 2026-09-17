@@ -210,10 +210,12 @@ isolated test recipe; it does not change the compiled `bb-plugin-studio` runtime
 
 ### Harness mode
 
-`@bb/plugin-sdk@0.4.1` still returns npm E404, so the official external Harness
-is unavailable. bb Plugin Studio must continue to label Harness unavailable rather than
-copying it from the sibling checkout. Fixture and isolated Live bb proofs remain
-separate and honest.
+`@get-bb/plugin-sdk` is published. As of bb 0.43.1, pin `0.4.87` (the version
+shipped with that release, not npm latest). Official `testing` and
+`testing/app` subpaths resolve from a clean plugin install. bb Plugin Studio must
+label Harness available only when those exports resolve, and must keep Harness
+behavioral rather than visual authority. Do not copy the harness from the
+sibling checkout. Fixture and isolated Live bb proofs remain separate.
 
 ### Host limits
 

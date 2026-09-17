@@ -10,7 +10,7 @@ declaration refresh, build, install, dev/reload, and the live runtime.
   are best-effort until added to CI;
 - Git for obtaining the source preview;
 - an existing bb plugin when you want inspection or native handoff guidance;
-- native bb 0.36.0 or newer, verified through 0.37.0, for supported native
+- native bb 0.43.1 or newer, verified through 0.43.1, for supported native
   inspection, build, or Live handoffs. Newer releases remain usable with a
   nonfatal audit notice and are best-effort until the verified-through boundary
   is updated.
@@ -20,7 +20,7 @@ handoffs. The local bb Plugin Studio artifact does not bundle, install, configur
 start bb on the author's behalf.
 
 Fixture exploration does not require native bb, Connect, secrets, a sibling
-`../bb` checkout, or a published `@bb/plugin-sdk` package.
+`../bb` checkout, or installing `@get-bb/plugin-sdk`.
 
 ## Reach the first Fixture story
 
@@ -141,7 +141,7 @@ my-plugin/
 ```
 
 Declare honest `engines.bb` and `engines.bbPluginSdk` ranges. Frontend adapters
-that import `@bb/plugin-sdk/app` belong inside the plugin entrypoint or a thin
+that import `@get-bb/plugin-sdk/app` belong inside the plugin entrypoint or a thin
 plugin-owned adapter because that runtime exists only inside bb. Reusable visual
 components should stay host-neutral; add a shared bb Plugin Studio package only after two
 real consumers need the same boundary.
@@ -159,9 +159,10 @@ dependencies, Harness is unavailable.
 | Harness | Public behavior through official testing contracts  | Exact host chrome, layout, routing, or runtime |
 | Live bb | Real plugin integration inside the supported bb app | Compatibility with untested future bb releases |
 
-Fixture is intentionally an approximation. Harness stays disabled until both
-the official `@bb/plugin-sdk/testing` package resolves and bb Plugin Studio has an
-upstream-backed adapter. Live bb is the visual authority because bb owns the
+Fixture is intentionally an approximation. Harness is available when the
+selected plugin resolves `@get-bb/plugin-sdk/testing` and
+`@get-bb/plugin-sdk/testing/app`. It validates public behavior, not host chrome.
+Live bb is the visual authority because bb owns the
 actual host layout, styling, routing, state, action lifecycle, and runtime.
 
 ## Before you contribute or ask for support

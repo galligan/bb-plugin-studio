@@ -162,7 +162,7 @@ async function assertProcessFootprintUnchanged(
   assert(
     JSON.stringify([...actualProcesses.entries()]) ===
       JSON.stringify([...expectedProcesses.entries()]),
-    `Studio ${operation} changed the disposable bb process group.`,
+    `Studio ${operation} changed the disposable bb process group.\nexpected=${JSON.stringify([...expectedProcesses.entries()])}\nactual=${JSON.stringify([...actualProcesses.entries()])}`,
   );
   assert(
     JSON.stringify(actualListeners) === JSON.stringify(expectedListeners),

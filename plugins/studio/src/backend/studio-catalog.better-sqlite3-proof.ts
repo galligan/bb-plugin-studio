@@ -11,7 +11,7 @@ import {
   RuntimeError,
   type InspectionSourceCandidateFacts,
 } from "@bb-plugin-studio/runtime/catalog";
-import type { PluginStorage } from "@bb/plugin-sdk";
+import type { PluginStorage } from "@get-bb/plugin-sdk";
 import Database from "better-sqlite3";
 
 import {

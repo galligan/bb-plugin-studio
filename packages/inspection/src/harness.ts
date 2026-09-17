@@ -4,6 +4,12 @@ import path from "node:path";
 import type { HarnessResolution, SdkPublicationResolution } from "./types.ts";
 import type { PluginPackageJson } from "./manifest.ts";
 
+export const PLUGIN_SDK_PACKAGE = "@get-bb/plugin-sdk";
+const PLUGIN_SDK_TESTING = `${PLUGIN_SDK_PACKAGE}/testing`;
+const PLUGIN_SDK_TESTING_APP = `${PLUGIN_SDK_PACKAGE}/testing/app`;
+const PLUGIN_SDK_REGISTRY_URL =
+  "https://registry.npmjs.org/@get-bb%2Fplugin-sdk";
+
 function stringOrNull(value: unknown): string | null {
   return typeof value === "string" && value.trim().length > 0
     ? value.trim()
@@ -28,7 +34,7 @@ async function packageVersionFromResolvedFile(
     const packagePath = path.join(current, "package.json");
     try {
       const packageJson = recordOrNull(await readJson(packagePath));
-      if (packageJson?.name === "@bb/plugin-sdk") {
+      if (packageJson?.name === PLUGIN_SDK_PACKAGE) {
         return stringOrNull(packageJson.version);
       }
     } catch {
@@ -46,7 +52,7 @@ function declaresPluginSdk(packageJson: PluginPackageJson): boolean {
     packageJson.devDependencies,
     packageJson.optionalDependencies,
     packageJson.peerDependencies,
-  ].some((value) => recordOrNull(value)?.["@bb/plugin-sdk"] !== undefined);
+  ].some((value) => recordOrNull(value)?.[PLUGIN_SDK_PACKAGE] !== undefined);
 }
 
 export async function resolveHarness(
@@ -57,7 +63,7 @@ export async function resolveHarness(
     return {
       state: "package-not-declared",
       version: null,
-      detail: "The selected plugin does not declare @bb/plugin-sdk.",
+      detail: `The selected plugin does not declare ${PLUGIN_SDK_PACKAGE}.`,
     };
   }
   const requireFromPlugin = createRequire(
@@ -70,8 +76,8 @@ export async function resolveHarness(
       return { file: null, error };
     }
   };
-  const frontendHarness = resolveRequiredSubpath("@bb/plugin-sdk/testing/app");
-  const serverHarness = resolveRequiredSubpath("@bb/plugin-sdk/testing");
+  const frontendHarness = resolveRequiredSubpath(PLUGIN_SDK_TESTING_APP);
+  const serverHarness = resolveRequiredSubpath(PLUGIN_SDK_TESTING);
   if (frontendHarness.file && serverHarness.file) {
     return {
       state: "available",
@@ -87,7 +93,7 @@ export async function resolveHarness(
     return {
       state: "testing-subpath-unavailable",
       version: await packageVersionFromResolvedFile(resolvedHarness),
-      detail: `@bb/plugin-sdk resolves locally, but both testing subpaths do not: ${[
+      detail: `${PLUGIN_SDK_PACKAGE} resolves locally, but both testing subpaths do not: ${[
         frontendHarness.error,
         serverHarness.error,
       ]
@@ -100,11 +106,11 @@ export async function resolveHarness(
   }
 
   try {
-    const sdkRuntime = requireFromPlugin.resolve("@bb/plugin-sdk");
+    const sdkRuntime = requireFromPlugin.resolve(PLUGIN_SDK_PACKAGE);
     return {
       state: "testing-subpath-unavailable",
       version: await packageVersionFromResolvedFile(sdkRuntime),
-      detail: `@bb/plugin-sdk resolves locally, but its testing subpaths do not: ${[
+      detail: `${PLUGIN_SDK_PACKAGE} resolves locally, but its testing subpaths do not: ${[
         frontendHarness.error,
         serverHarness.error,
       ]
@@ -117,7 +123,7 @@ export async function resolveHarness(
     return {
       state: "dependency-unresolved",
       version: null,
-      detail: `@bb/plugin-sdk is declared but cannot be resolved locally: ${error instanceof Error ? error.message : String(error)}`,
+      detail: `${PLUGIN_SDK_PACKAGE} is declared but cannot be resolved locally: ${error instanceof Error ? error.message : String(error)}`,
     };
   }
 }
@@ -126,18 +132,15 @@ export async function resolveSdkPublication(): Promise<SdkPublicationResolution>
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), 5_000);
   try {
-    const response = await fetch(
-      "https://registry.npmjs.org/@bb%2Fplugin-sdk",
-      {
-        headers: { Accept: "application/vnd.npm.install-v1+json" },
-        signal: controller.signal,
-      },
-    );
+    const response = await fetch(PLUGIN_SDK_REGISTRY_URL, {
+      headers: { Accept: "application/vnd.npm.install-v1+json" },
+      signal: controller.signal,
+    });
     if (response.status === 404) {
       return {
         state: "missing",
         version: null,
-        detail: "The npm registry does not currently publish @bb/plugin-sdk.",
+        detail: `The npm registry does not currently publish ${PLUGIN_SDK_PACKAGE}.`,
       };
     }
     if (!response.ok) {
@@ -153,7 +156,7 @@ export async function resolveSdkPublication(): Promise<SdkPublicationResolution>
       ? {
           state: "published",
           version,
-          detail: `The npm registry publishes @bb/plugin-sdk ${version}.`,
+          detail: `The npm registry publishes ${PLUGIN_SDK_PACKAGE} ${version}.`,
         }
       : {
           state: "unknown",

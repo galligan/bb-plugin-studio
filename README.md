@@ -12,7 +12,7 @@ the real native bb development loop. bb Plugin Studio is a community project, no
 the upstream bb distribution.
 
 > [!IMPORTANT]
-> bb Plugin Studio does not replace bb, the bb CLI, or `@bb/plugin-sdk`. Native bb remains
+> bb Plugin Studio does not replace bb, the bb CLI, or `@get-bb/plugin-sdk`. Native bb remains
 > the source of truth for plugin contracts, scaffolding, builds, installation,
 > reload, runtime behavior, and the final in-app result.
 
@@ -44,7 +44,7 @@ Today bb Plugin Studio can:
 | Layer                              | What it owns                                                                                                                                            |
 | ---------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | [bb](https://github.com/get-bb/bb) | Plugin scaffolding, declaration refresh, build, install, update, dev/reload, host UI, routing, state, and live runtime                                  |
-| `@bb/plugin-sdk`                   | The typed backend and frontend contracts plugins compile against, plus the official testing contracts when they are available to the plugin             |
+| `@get-bb/plugin-sdk`               | The typed backend and frontend contracts plugins compile against, plus the official testing contracts when they resolve from the selected plugin        |
 | bb Plugin Studio                   | Passive discovery and compatibility reports, deterministic fixture stories, visual/a11y tooling, thin native-command orchestration, and Live bb handoff |
 
 The native loop still looks like this:
@@ -76,11 +76,10 @@ the Studio rename.
   plugin path is installed. Otherwise it prints the native install command.
 
 The official SDK testing subpaths are the behavioral authority. bb Plugin Studio does not
-copy them or import private bb source as a fallback. Until the selected plugin
-can resolve the official testing package and bb Plugin Studio has an upstream-backed
-adapter, Harness mode remains unavailable. Publication of those testing
-subpaths is tracked upstream in
-[get-bb/bb#1134](https://github.com/get-bb/bb/issues/1134).
+copy them or import private bb source as a fallback. When the selected plugin
+installs `@get-bb/plugin-sdk` and those `testing` / `testing/app` exports
+resolve, Harness mode is available for public-behavior checks. It still does
+not reproduce bb layout or CSS; Live bb remains the visual authority.
 
 ## Try the source preview
 
@@ -148,7 +147,7 @@ bb Plugin Studio keeps three claims separate:
 - **Fixture** — deterministic browser state for quick visual iteration. It is an
   approximation and runs without bb.
 - **Harness** — public behavior validated by the official
-  `@bb/plugin-sdk/testing` contracts. It does not reproduce bb layout or CSS.
+  `@get-bb/plugin-sdk/testing` contracts. It does not reproduce bb layout or CSS.
 - **Live bb** — the plugin running inside bb. This is the visual and integration
   authority.
 

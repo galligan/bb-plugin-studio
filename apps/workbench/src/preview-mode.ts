@@ -18,9 +18,9 @@ export function previewModeCapabilities(
       detail: "Deterministic approximation rendered by bb Plugin Studio.",
     },
     harness: {
-      available: false,
+      available: Boolean(harness?.available),
       detail: harness?.available
-        ? "The official Harness contract resolves, but bb Plugin Studio has no upstream-backed Harness adapter yet."
+        ? `${harness.detail} Harness results are behavioral, not visual authority.`
         : (harness?.detail ?? "Inspecting the official SDK testing contract."),
     },
     live: {

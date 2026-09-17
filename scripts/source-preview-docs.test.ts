@@ -71,7 +71,7 @@ describe("bb Plugin Studio source preview documentation", () => {
       "it never serves inspection data over HTTP",
     );
     expect(authorProse).toContain(
-      "native bb 0.36.0 or newer, verified through 0.37.0",
+      "native bb 0.43.1 or newer, verified through 0.43.1",
     );
     expect(authorProse).toContain(
       "Newer releases remain usable with a nonfatal audit notice",

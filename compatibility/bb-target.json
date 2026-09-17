@@ -3,30 +3,30 @@
   "schemaVersion": 2,
   "acceptedDecision": null,
   "target": {
-    "minimumBbVersion": "0.36.0",
-    "verifiedThroughBbVersion": "0.37.0",
-    "pluginSdkVersion": "0.4.1",
-    "pluginSdkEngineRange": "^0.4.1",
-    "upstreamRef": "desktop-v0.37.0"
+    "minimumBbVersion": "0.43.1",
+    "verifiedThroughBbVersion": "0.43.1",
+    "pluginSdkVersion": "0.4.87",
+    "pluginSdkEngineRange": "^0.4.87",
+    "upstreamRef": "desktop-v0.43.1"
   },
   "publicArtifacts": {
-    "appPackageUrl": "https://raw.githubusercontent.com/get-bb/bb/desktop-v0.37.0/apps/app/package.json",
-    "pluginSdkPackageUrl": "https://raw.githubusercontent.com/get-bb/bb/desktop-v0.37.0/packages/plugin-sdk/package.json",
-    "themeCssUrl": "https://raw.githubusercontent.com/get-bb/bb/desktop-v0.37.0/apps/app/src/components/ui/theme.css",
-    "themeCssSha256": "c2ed653f27a5836f98733a027425cfa87eff7ce9a43b3f6cac4723c315b83282",
+    "appPackageUrl": "https://raw.githubusercontent.com/get-bb/bb/desktop-v0.43.1/apps/app/package.json",
+    "pluginSdkPackageUrl": "https://raw.githubusercontent.com/get-bb/bb/desktop-v0.43.1/packages/plugin-sdk/package.json",
+    "themeCssUrl": "https://raw.githubusercontent.com/get-bb/bb/desktop-v0.43.1/apps/app/src/components/ui/theme.css",
+    "themeCssSha256": "5505d0036def8e9c485634f7a5b59b1087d9e71ecdbce48c563dc9dc0756b81b",
     "declarations": {
       "backend": {
-        "url": "https://raw.githubusercontent.com/get-bb/bb/desktop-v0.37.0/packages/plugin-sdk/bundled-types/bb-plugin-sdk.d.ts",
-        "sha256": "92ed82ff874280ab0c239e11669da3ed040b800aa1e8dd59cdf9c617dafcaccb"
+        "url": "https://raw.githubusercontent.com/get-bb/bb/desktop-v0.43.1/packages/plugin-sdk/src/backend-contract.ts",
+        "sha256": "ddab6fbf2cdf31e2986ee7f6bf6ef4883af956e6391973f02cf3e6c46be6cb4d"
       },
       "app": {
-        "url": "https://raw.githubusercontent.com/get-bb/bb/desktop-v0.37.0/packages/plugin-sdk/bundled-types/bb-plugin-sdk-app.d.ts",
-        "sha256": "984e0539c6926d42ddaf666c6b6890a567d08f711d9ae73a9b986620230eed9a"
+        "url": "https://raw.githubusercontent.com/get-bb/bb/desktop-v0.43.1/packages/plugin-sdk/src/app-contract.ts",
+        "sha256": "c9379f666852c95654c63641aebcc46a4b596f13aa1d8090b95414e00ac85aab"
       }
     },
     "registry": {
-      "url": "https://raw.githubusercontent.com/get-bb/bb/desktop-v0.37.0/packages/plugin-registry/r/index.json",
-      "sha256": "ae65ae093d2435540e445707529337598cfa9f3446a8535986affef0939fe1e2",
+      "url": "https://raw.githubusercontent.com/get-bb/bb/desktop-v0.43.1/packages/plugin-registry/r/index.json",
+      "sha256": "c1148ddb7da06da32e3e35bf9398dd4989253719b37b44276f6daf48408b6eb6",
       "items": [
         "accordion",
         "alert",
@@ -51,6 +51,8 @@
         "form",
         "hover-card",
         "icon",
+        "icon-extended",
+        "icon-registry",
         "input",
         "input-otp",
         "label",

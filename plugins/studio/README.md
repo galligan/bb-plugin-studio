@@ -32,7 +32,7 @@ bun --filter bb-plugin-studio test
 bun run plugin-studio:package:test
 ```
 
-The macOS arm64 package gate runs released bb 0.36's plugin build, inspects the
+The macOS arm64 package gate runs released bb 0.43.1's plugin build, inspects the
 resulting npm tarball, and proves managed schema-v4 discovery without a child
 process or private listener. The publishable package manifest
 uses the canonical `bb-plugin-studio` package and command

@@ -2,6 +2,7 @@ import { afterEach, describe, expect, test } from "bun:test";
 import { promises as fs } from "node:fs";
 import os from "node:os";
 import path from "node:path";
+import { fileURLToPath } from "node:url";
 import {
   formatInspection,
   inspectPlugin,
@@ -137,7 +138,7 @@ function nativeRunner(pluginRoot: string) {
 const unavailableHarness: HarnessResolution = {
   state: "package-not-declared",
   version: null,
-  detail: "The selected plugin does not declare @bb/plugin-sdk.",
+  detail: "The selected plugin does not declare @get-bb/plugin-sdk.",
 };
 
 afterEach(async () => {
@@ -152,15 +153,20 @@ describe("actionable plugin inspection", () => {
   test("resolves the required harness exports without requiring the app runtime", async () => {
     const workspaceRoot = await createWorkspace();
     const packageJson = validPluginPackage("harness", {
-      dependencies: { "@bb/plugin-sdk": "^0.5.0" },
+      dependencies: { "@get-bb/plugin-sdk": "^0.5.0" },
     }) as PluginPackageJson;
     const pluginRoot = await writePlugin(workspaceRoot, "harness", packageJson);
-    const sdkRoot = path.join(pluginRoot, "node_modules", "@bb", "plugin-sdk");
+    const sdkRoot = path.join(
+      pluginRoot,
+      "node_modules",
+      "@get-bb",
+      "plugin-sdk",
+    );
     await fs.mkdir(sdkRoot, { recursive: true });
     await fs.writeFile(
       path.join(sdkRoot, "package.json"),
       `${JSON.stringify({
-        name: "@bb/plugin-sdk",
+        name: "@get-bb/plugin-sdk",
         version: "0.5.0",
         exports: {
           ".": "./index.js",
@@ -181,6 +187,56 @@ describe("actionable plugin inspection", () => {
       detail: "The official selected-plugin testing subpaths resolved.",
     });
   });
+
+  test(
+    "resolves published testing subpaths from a clean package install",
+    async () => {
+      const workspaceRoot = await createWorkspace();
+      const packageJson = validPluginPackage("published-harness", {
+        dependencies: { "@get-bb/plugin-sdk": "0.4.87" },
+      }) as PluginPackageJson;
+      const pluginRoot = await writePlugin(
+        workspaceRoot,
+        "published-harness",
+        packageJson,
+      );
+      const packedSdk = path.join(
+        fileURLToPath(new URL("../../..", import.meta.url)),
+        "plugins",
+        "studio",
+        "node_modules",
+        "@get-bb",
+        "plugin-sdk",
+      );
+      const pack = Bun.spawnSync(
+        ["npm", "pack", "--ignore-scripts", "--pack-destination", pluginRoot],
+        { cwd: packedSdk, stdout: "pipe", stderr: "pipe" },
+      );
+      expect(pack.exitCode).toBe(0);
+      const tarball = path.join(pluginRoot, "get-bb-plugin-sdk-0.4.87.tgz");
+      const install = Bun.spawnSync(
+        [
+          "npm",
+          "install",
+          "--ignore-scripts",
+          "--no-audit",
+          "--no-fund",
+          "--prefix",
+          pluginRoot,
+          tarball,
+        ],
+        { stdout: "pipe", stderr: "pipe" },
+      );
+      expect(install.exitCode).toBe(0);
+
+      await expect(resolveHarness(pluginRoot, packageJson)).resolves.toEqual({
+        state: "available",
+        version: "0.4.87",
+        detail: "The official selected-plugin testing subpaths resolved.",
+      });
+    },
+    { timeout: 30_000 },
+  );
 
   test("emits a versioned report with compatibility, provenance, and trust facts", async () => {
     const workspaceRoot = await createWorkspace();
@@ -323,7 +379,7 @@ describe("actionable plugin inspection", () => {
       workspaceRoot,
       "ui",
       validPluginPackage("ui", {
-        dependencies: { "@bb/plugin-sdk": "^0.4.1" },
+        dependencies: { "@get-bb/plugin-sdk": "^0.4.1" },
         bb: { app: "./app.tsx" },
       }),
     );
@@ -334,7 +390,7 @@ describe("actionable plugin inspection", () => {
       resolveHarness: async () => ({
         state: "dependency-unresolved",
         version: null,
-        detail: "@bb/plugin-sdk is declared but cannot be resolved.",
+        detail: "@get-bb/plugin-sdk is declared but cannot be resolved.",
       }),
       resolveSdkPublication: async () => ({
         state: "published",
@@ -455,7 +511,7 @@ describe("actionable plugin inspection", () => {
       workspaceRoot,
       "partial-sdk",
       validPluginPackage("partial-sdk", {
-        dependencies: { "@bb/plugin-sdk": "^0.4.1" },
+        dependencies: { "@get-bb/plugin-sdk": "^0.4.1" },
         bb: { app: "./app.tsx" },
       }),
     );

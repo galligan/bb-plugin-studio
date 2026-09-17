@@ -264,7 +264,7 @@ if (import.meta.main) {
   const declarationPath = Bun.argv[2];
   if (!declarationPath) {
     throw new Error(
-      "Pass an explicit @bb/plugin-sdk/app declaration path; no sibling fallback is used.",
+      "Pass an explicit @get-bb/plugin-sdk/app declaration path; no sibling fallback is used.",
     );
   }
   const declaration = Bun.file(declarationPath);

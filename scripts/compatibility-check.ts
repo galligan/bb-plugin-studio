@@ -144,6 +144,10 @@ function compareVersions(left: string, right: string): number {
   return leftParts[3].localeCompare(rightParts[3]);
 }
 
+function engineRangeTargetsSdkVersion(range: string, version: string): boolean {
+  return range === `^${version}` || range === `>=${version}`;
+}
+
 function bbVersionCheck(
   target: CompatibilityTarget["target"],
   observed?: string,
@@ -313,7 +317,10 @@ function targetCoherenceIssues(target: CompatibilityTarget): string[] {
     issues.push(`upstreamRef must be ${expectedRef}`);
   }
   if (
-    target.target.pluginSdkEngineRange !== `^${target.target.pluginSdkVersion}`
+    !engineRangeTargetsSdkVersion(
+      target.target.pluginSdkEngineRange,
+      target.target.pluginSdkVersion,
+    )
   ) {
     issues.push("plugin SDK engine range must target the recorded SDK version");
   }
@@ -325,17 +332,31 @@ function targetCoherenceIssues(target: CompatibilityTarget): string[] {
   ) {
     issues.push("minimum bb version cannot exceed verified-through bb version");
   }
-  const urls = [
+  const gitUrls = [
     target.publicArtifacts.appPackageUrl,
     target.publicArtifacts.pluginSdkPackageUrl,
     target.publicArtifacts.themeCssUrl,
     target.publicArtifacts.registry.url,
+  ];
+  if (gitUrls.some((url) => !url.includes(`/${target.target.upstreamRef}/`))) {
+    issues.push(
+      "git public artifact URLs must contain upstreamRef as their release path",
+    );
+  }
+  const sdkMarker = `@get-bb/plugin-sdk@${target.target.pluginSdkVersion}/`;
+  const declarationUrls = [
     target.publicArtifacts.declarations.backend.url,
     target.publicArtifacts.declarations.app.url,
   ];
-  if (urls.some((url) => !url.includes(`/${target.target.upstreamRef}/`))) {
+  if (
+    declarationUrls.some(
+      (url) =>
+        !url.includes(`/${target.target.upstreamRef}/`) &&
+        !url.includes(sdkMarker),
+    )
+  ) {
     issues.push(
-      "every public artifact URL must contain upstreamRef as its release path",
+      "declaration URLs must identify the git tag or the recorded SDK version",
     );
   }
   return issues;
@@ -680,6 +701,41 @@ function publicArtifactUrl(
   return text;
 }
 
+function publicDeclarationUrl(
+  value: unknown,
+  ref: string,
+  sdkVersion: string,
+  name: "backend" | "app",
+  fieldName: string,
+): string {
+  const text = string(value, fieldName);
+  const url = new URL(text);
+  const bundledFile =
+    name === "app" ? "bb-plugin-sdk-app.d.ts" : "bb-plugin-sdk.d.ts";
+  const sourceFile = name === "app" ? "app-contract.ts" : "backend-contract.ts";
+  const gitBundled = `/get-bb/bb/${ref}/packages/plugin-sdk/bundled-types/${bundledFile}`;
+  const gitSource = `/get-bb/bb/${ref}/packages/plugin-sdk/src/${sourceFile}`;
+  const unpkgBundled = `/@get-bb/plugin-sdk@${sdkVersion}/bundled-types/${bundledFile}`;
+  const gitOk =
+    url.protocol === "https:" &&
+    url.hostname === "raw.githubusercontent.com" &&
+    (url.pathname === gitBundled || url.pathname === gitSource) &&
+    !url.search &&
+    !url.hash;
+  const unpkgOk =
+    url.protocol === "https:" &&
+    url.hostname === "unpkg.com" &&
+    url.pathname === unpkgBundled &&
+    !url.search &&
+    !url.hash;
+  if (!gitOk && !unpkgOk) {
+    throw new Error(
+      `${fieldName} must be the immutable public ${gitBundled}, ${gitSource}, or ${unpkgBundled} artifact.`,
+    );
+  }
+  return text;
+}
+
 export function parseCompatibilityTarget(value: unknown): CompatibilityTarget {
   const root = record(value, "compatibility target");
   if (root.schemaVersion !== 2) throw new Error("schemaVersion must be 2.");
@@ -806,10 +862,11 @@ export function parseCompatibilityTarget(value: unknown): CompatibilityTarget {
           return [
             name,
             {
-              url: publicArtifactUrl(
+              url: publicDeclarationUrl(
                 declaration.url,
                 upstreamRef,
-                `packages/plugin-sdk/bundled-types/bb-plugin-sdk${name === "app" ? "-app" : ""}.d.ts`,
+                pluginSdkVersion,
+                name,
                 `publicArtifacts.declarations.${name}.url`,
               ),
               sha256: sha256(

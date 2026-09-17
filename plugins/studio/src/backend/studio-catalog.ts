@@ -9,7 +9,7 @@ import {
   type DevelopmentTargetCatalog,
   type ObjectId,
 } from "@bb-plugin-studio/runtime/catalog";
-import type { PluginStorage } from "@bb/plugin-sdk";
+import type { PluginStorage } from "@get-bb/plugin-sdk";
 
 export const STUDIO_CATALOG_PRINCIPAL_ID = PrincipalIdSchema.parse(
   "studio_catalog_principal".padEnd(32, "_"),

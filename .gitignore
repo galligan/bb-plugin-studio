@@ -1,5 +1,6 @@
 node_modules/
 dist/
+plugins/studio/types/
 .DS_Store
 *.log
 .vite/

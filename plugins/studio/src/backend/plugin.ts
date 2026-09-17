@@ -1,5 +1,5 @@
 import { randomBytes } from "node:crypto";
-import { defineRpcContract, type BbPluginApi } from "@bb/plugin-sdk";
+import { defineRpcContract, type BbPluginApi } from "@get-bb/plugin-sdk";
 import {
   createRequestContext,
   createProjectTargetController,
