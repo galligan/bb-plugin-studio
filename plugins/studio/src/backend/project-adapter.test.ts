@@ -9,6 +9,7 @@ import {
   listProjectOptions,
   resolveProjectSource,
 } from "./project-adapter.ts";
+import { STUDIO_FEATURE_FLAGS } from "./studio-feature-flags.ts";
 
 const source = (overrides: Record<string, unknown> = {}) => ({
   id: "source-1",
@@ -54,6 +55,32 @@ function sdk(projects = [project()], primaryHostId: string | null = "host-1") {
 }
 
 describe("released bb project adapter", () => {
+  test("ships enrolled-host discovery disabled and omits remote-only projects", async () => {
+    expect(STUDIO_FEATURE_FLAGS.enrolledHostDiscovery).toBe(false);
+
+    const inventory = await loadProjectInventory(
+      sdk([
+        project({
+          sources: [source({ hostId: "enrolled-host" })],
+        }),
+      ]),
+    );
+
+    expect(inventory).toMatchObject({
+      state: "ready",
+      inventoryState: "complete",
+      catalog: { state: "ready", truncated: false, items: [] },
+      sources: [],
+    });
+    expect(JSON.stringify(inventory)).not.toContain("enrolled-host");
+    await expect(
+      resolveProjectSource(
+        sdk([project({ sources: [source({ hostId: "enrolled-host" })] })]),
+        "project-1",
+      ),
+    ).rejects.toThrow("Project source unavailable");
+  });
+
   test("returns path-free rows beside server-private source identities", async () => {
     const inventory = await loadProjectInventory(sdk());
     expect(inventory.catalog.items).toEqual([
@@ -155,11 +182,10 @@ describe("released bb project adapter", () => {
     });
   });
 
-  test("fails closed for zero, foreign-project, foreign-host, or multiple matching sources", async () => {
+  test("fails closed for zero, foreign-project, malformed, or ambiguous sources", async () => {
     const variants = [
       [],
       [source({ projectId: "other" })],
-      [source({ hostId: "host-2" })],
       [source(), source({ id: "source-2" })],
       [source(), source({ id: "source-2", hostId: "host-2" })],
       [source({ path: "../relative" })],

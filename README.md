@@ -35,6 +35,10 @@ Today bb Plugin Studio can:
 - delegate compatible build and development commands to the native `bb` CLI;
 - explain what is available in Fixture, official SDK Harness, and Live bb modes.
 
+> [!NOTE]
+> Remote projects on enrolled bb machines are not currently supported. Plugin
+> Studio discovers projects only on bb's primary machine.
+
 ## bb, the plugin SDK, and bb Plugin Studio
 
 | Layer                              | What it owns                                                                                                                                            |

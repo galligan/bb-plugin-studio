@@ -1,7 +1,7 @@
 # Plugin Studio identity, runtime, and compatibility convergence
 
 Date: 2026-08-13
-Status: Ready-PR horizon complete; implementation stack remains unmerged
+Status: Native convergence landed on `main`; enrolled-host discovery deferred
 Parent: [#21](https://github.com/galligan/bb-plugin-studio/issues/21)
 
 ## Outcome
@@ -14,8 +14,8 @@ Plugin Studio:
   followed by one clean canonical `studio` installation;
 - primary-host discovery no longer requires a packaged child runtime or private
   loopback API;
-- enrolled-host discovery waits for a bounded public bb capability rather than
-  using hidden terminals or unrestricted execution; and
+- enrolled-host discovery is explicitly feature-gated off and outside the
+  current product scope; and
 - compatibility promises a minimum bb version while newer releases remain
   usable and auditable.
 
@@ -39,18 +39,18 @@ Plugin Studio:
   result truncation.
 - Compatibility separately enforces minimum bb 0.36.0 and verified-through bb
   0.37.0, while newer compatible releases produce a nonfatal audit notice.
-- PRs #108, #109, #110, #113, and #114 are exact-head reviewed, hosted-green,
-  mergeable, and ready for review. They have not been merged or published.
+- PRs #108, #109, #110, #113, and #114 landed bottom-to-top on `main`; exact
+  post-merge CI and compatibility checks are green. Nothing has been published.
 
 ## Work graph
 
 ### Technical identity migration
 
-- [ ] [#86](https://github.com/galligan/bb-plugin-studio/issues/86) — parent
+- [x] [#86](https://github.com/galligan/bb-plugin-studio/issues/86) — completed
 - [x] [#94](https://github.com/galligan/bb-plugin-studio/issues/94) — superseded
       by the owner-approved legacy removal and clean canonical install
-- [ ] [#95](https://github.com/galligan/bb-plugin-studio/issues/95) — ready in
-      PR #108; closes after the stack lands
+- [x] [#95](https://github.com/galligan/bb-plugin-studio/issues/95) — landed in
+      PR #108
 
 Historical release evidence and Git history retain truthful old names. Current
 old-name exceptions must be isolated to a compatibility manifest/module and
@@ -58,28 +58,28 @@ retired under a versioned policy.
 
 ### Native-runtime convergence
 
-- [ ] [#96](https://github.com/galligan/bb-plugin-studio/issues/96) — parent
+- [x] [#96](https://github.com/galligan/bb-plugin-studio/issues/96) — completed
 - [x] [#98](https://github.com/galligan/bb-plugin-studio/issues/98) — runtime
       boundary ADR and live schema inventory
-- [ ] [#99](https://github.com/galligan/bb-plugin-studio/issues/99) — ready in
+- [x] [#99](https://github.com/galligan/bb-plugin-studio/issues/99) — landed in
       PR #113 with one shared controller and no production child path
-- [ ] [#100](https://github.com/galligan/bb-plugin-studio/issues/100) — ready in
-      PR #110 with bb-owned catalog storage
-- [ ] [#101](https://github.com/galligan/bb-plugin-studio/issues/101) — ready in
-      PR #114; removes supervision, private HTTP/auth, and packaged runtime
-- [ ] [#102](https://github.com/galligan/bb-plugin-studio/issues/102) — add
-      bounded host-routed discovery to public bb
+- [x] [#100](https://github.com/galligan/bb-plugin-studio/issues/100) — landed
+      in PR #110 with bb-owned catalog storage
+- [x] [#101](https://github.com/galligan/bb-plugin-studio/issues/101) — landed
+      in PR #114; removed supervision, private HTTP/auth, and packaged runtime
+- [ ] [#102](https://github.com/galligan/bb-plugin-studio/issues/102) — deferred
+      future proposal; `enrolledHostDiscovery` ships off
 
-Critical path: #98 → (#99 and #100) → #101. #102 can proceed in parallel and
-blocks full enrolled-machine parity, but it does not block removing the child
-runtime for primary-host Studio use.
+The native critical path #98 → (#99 and #100) → #101 is complete. #102 is not
+scheduled for the current Plugin Studio scope and does not block primary-host
+use or sharing.
 
 ### Compatibility and scanner hardening
 
 - [x] [#93](https://github.com/galligan/bb-plugin-studio/issues/93) — minimum
       `0.36.0`, separately tracked verified-through `0.37.0`, and a nonfatal
       newer-than-verified result
-- [ ] [#97](https://github.com/galligan/bb-plugin-studio/issues/97) — ready in
+- [x] [#97](https://github.com/galligan/bb-plugin-studio/issues/97) — landed in
       PR #109 with bounded enumeration and measured pathological-tree proof
 
 Required PR CI uses immutable exact minimum and exact verified-through lanes.

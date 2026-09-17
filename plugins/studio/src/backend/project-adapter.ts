@@ -11,6 +11,10 @@ import {
   projectOptionSchema,
   type ProjectCatalog,
 } from "./workbench-contract.ts";
+import {
+  STUDIO_FEATURE_FLAGS,
+  type StudioFeatureFlags,
+} from "./studio-feature-flags.ts";
 
 interface ProjectSourceLike {
   readonly id?: unknown;
@@ -117,6 +121,23 @@ function sourceFor(project: ProjectLike, primaryHostId: string | null) {
     : null;
 }
 
+function isDisabledEnrolledHostProject(
+  project: ProjectLike,
+  primaryHostId: string,
+  featureFlags: StudioFeatureFlags,
+) {
+  if (featureFlags.enrolledHostDiscovery || project.sources.length !== 1) {
+    return false;
+  }
+  const source = project.sources[0]!;
+  return (
+    source.type === "local_path" &&
+    source.projectId === project.id &&
+    typeof source.hostId === "string" &&
+    source.hostId !== primaryHostId
+  );
+}
+
 export async function listProjectOptions(
   sdk: ReleasedProjectSdk,
 ): Promise<ProjectCatalog> {
@@ -125,6 +146,7 @@ export async function listProjectOptions(
 
 export async function loadProjectInventory(
   sdk: ReleasedProjectSdk,
+  featureFlags: StudioFeatureFlags = STUDIO_FEATURE_FLAGS,
 ): Promise<ProjectInventory> {
   try {
     const [{ primaryHostId, dataDir }, projects] = await Promise.all([
@@ -135,6 +157,7 @@ export async function loadProjectInventory(
     const hasUnscannableProjects = projects.some(
       (project) =>
         projectIdSchema.safeParse(project.id).success &&
+        !isDisabledEnrolledHostProject(project, primaryHostId, featureFlags) &&
         sourceFor(project, primaryHostId) === null,
     );
     const eligible = projects

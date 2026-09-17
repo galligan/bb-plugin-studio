@@ -248,10 +248,13 @@ describe("Plugin Studio in-process backend v4", () => {
   });
 
   test("never sends enrolled, mixed, or ambiguous paths to discovery", async () => {
-    for (const sources of [
-      [source({ hostId: "enrolled-host" })],
-      [source(), source({ id: "source-2", hostId: "enrolled-host" })],
-      [source(), source({ id: "source-2" })],
+    for (const [sources, expectedState] of [
+      [[source({ hostId: "enrolled-host" })], "ready"],
+      [
+        [source(), source({ id: "source-2", hostId: "enrolled-host" })],
+        "partial",
+      ],
+      [[source(), source({ id: "source-2" })], "partial"],
     ]) {
       let called = false;
       let scannedPaths: string[] = [];
@@ -266,6 +269,7 @@ describe("Plugin Studio in-process backend v4", () => {
       const result = await host.handlers().refresh();
       expect(called).toBe(true);
       expect(scannedPaths).toEqual([]);
+      expect(result).toMatchObject({ projects: { state: expectedState } });
       expect(JSON.stringify(result)).not.toContain("enrolled-host");
     }
   });

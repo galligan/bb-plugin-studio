@@ -32,6 +32,9 @@ describe("bb Plugin Studio source preview documentation", () => {
     expect(readme).not.toContain("img.shields.io/npm/v/bb-plugin-studio");
     expect(readme).toContain("## Try the source preview");
     expect(readme).toContain("[Source preview guide](docs/source-preview.md)");
+    expect(readme).toContain(
+      "Remote projects on enrolled bb machines are not currently supported.",
+    );
 
     expect(preview).toContain(
       "git clone https://github.com/galligan/bb-plugin-studio.git\ncd bb-plugin-studio",

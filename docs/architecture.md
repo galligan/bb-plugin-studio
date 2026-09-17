@@ -3,8 +3,9 @@
 The runtime direction is governed by
 [`docs/architecture/runtime-convergence.md`](architecture/runtime-convergence.md):
 Plugin Studio converges onto bb-owned plugin lifecycle and storage, retains the
-native in-process path for primary-host discovery, and requires a new bounded
-public bb capability before enrolled remote-host discovery is enabled.
+native in-process path for primary-host discovery, and ships enrolled remote-host
+discovery behind the default-off `enrolledHostDiscovery` Studio feature flag.
+Remote-only projects are outside the active Studio inventory while it is off.
 
 ## Repository boundary
 
