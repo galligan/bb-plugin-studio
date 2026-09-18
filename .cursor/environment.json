@@ -1,0 +1,4 @@
+{
+  "name": "bb Plugin Studio",
+  "install": "bash .cursor/install.sh"
+}
